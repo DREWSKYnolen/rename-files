@@ -1,4 +1,6 @@
 import os
+import binascii
+import re
 
 def rename_files():
     #(1) get file names from a folder
@@ -8,13 +10,16 @@ def rename_files():
 
     
     #(2) for each file, rename filename
-    #header of file with 4A464946 is JFIF in ascii (which is a jpg/png file)
 
+    #filename = 'f_019916'
+   
 
-
-    # translation_table = str.maketrans("0123456789", "          ", "0123456789")
-    # for file_name in file_list:
-    #     os.rename(file_name, file_name.translate(translation_table))
-    # os.chdir(saved_path)
+    for filename in os.listdir(file_path):
+        with open(filename, 'rb') as f:
+            content = re.search(b'\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01\x02\x00\x00\x01', f.read())
+            if content is not "None":
+                os.rename(filename,filename + ".jpg")
+    
+    
 
 rename_files()
